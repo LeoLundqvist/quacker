@@ -1,6 +1,7 @@
 <?php
 $username = $_POST["username"];
 $password = $_POST["password"];
+$password2 = $_POST["password2"];
 
 $db = new SQLite3('USER.sq3'); #vilken databas öppnar vi? 
 
@@ -15,15 +16,9 @@ $userList = $db->query($allInputQuery); #en ny array som innehåller all informa
 #skicka till "message board"
 #skriv ut användarnamnet till den som har loggat in med hjälp av cookien 
 
-
-while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
-{ 
- if($username == $row['USERNAME'] && $password == $row['PASSWORD'])
- {
+if(password == $password2)
+{
   header("Location: Feed.php");
- }
 }
-
-header("Location: LoggIn.php");
 
 ?>
