@@ -4,7 +4,7 @@
 Quacker <br><br>
 <form action="CheckLoggIn.php" method="POST">
 Username: <input type="text" name="username"><br> <br>
-Lösenord: <input type="text" name="password">
+Lösenord: <input type="password" name="password">
 <input type="submit">
 
 <br> <br>
