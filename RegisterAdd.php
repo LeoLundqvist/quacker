@@ -7,7 +7,7 @@ $password2 = $_POST["password2"];
 $db = new SQLite3('USER.sq3'); 
 
 #Skapar tabellen direkt i PHP om den inte finns
-$db->exec("CREATE TABLE IF NOT EXISTS USER(USERNAME text primary key, PASSWORD text)"); 
+$db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, PASSWORD text)"); 
 
 #$db->exec("INSERT INTO USER VALUES('".$username."','".$password."')"); #exec kör enskilda kommandon, just INSERT INTO är snällt och går bra. 
 
@@ -66,7 +66,7 @@ else if($password != $password2)
 }
 else 
 {
-	$db->exec("INSERT INTO USER VALUES('".$username."','".$password."')");
+	$db->exec("INSERT INTO USER(USERNAME, PASSWORD) VALUES('".$username."','".$password."')");
 	setcookie("user", $username, time()+(86400*30),'/');
 	header("Location: Feed.php");
 }

@@ -4,7 +4,7 @@ $password = $_POST["password"];
 
 $db = new SQLite3('USER.sq3'); #vilken databas öppnar vi? 
 
-$db->exec("CREATE TABLE IF NOT EXISTS USER(USERNAME text primary key, PASSWORD text)"); #Skapa tabellen direkt i PHP... 
+$db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, PASSWORD text)"); #Skapa tabellen direkt i PHP... 
 
 #$db->exec("INSERT INTO USER VALUES('".$username."','".$password."')"); #exec kör enskilda kommandon, just INSERT INTO är snällt och går bra. 
 
@@ -23,7 +23,8 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
   header("Location: Feed.php");
  }
 }
-
-header("Location: LoggIn.php");
-
+echo "Finns inte";
 ?>
+<html>
+<A HREF=LoggIn.php>Försök igen</A>
+</html>
