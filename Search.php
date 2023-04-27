@@ -1,6 +1,5 @@
 <?php
-$username = $_POST["username"];
-$password = $_POST["password"];
+$searchUsername = $_POST["searchUsername"];
 
 $db = new SQLite3('USER.sq3'); #vilken databas öppnar vi? 
 
@@ -12,15 +11,20 @@ $userList = $db->query($allInputQuery); #en ny array som innehåller all informa
 while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
 { 
     #kollar ifall användarnamnet och lösenordet stämmer överens med user tabell rowen
-    if($username == $row['USERNAME'] && $password == $row['PASSWORD'])
+    if($searchUsername == $row['USERNAME'])
     {
         #skapar user cookie som sparar användarnamnet
-        setcookie("user", $username, time()+(86400*30),'/');
-        header("Location: Feed.php");
+        echo $row['USERNAME'];
+        ?>
+        <html>
+        <form action ="Profile.php" method=post> 
+        <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>">
+        <input type = "submit">
+        </form>
+
+        </html>
+        <?php
     }
 }
-echo "Finns inte";
+
 ?>
-<html>
-<A HREF=LoggIn.php>Försök igen</A>
-</html>

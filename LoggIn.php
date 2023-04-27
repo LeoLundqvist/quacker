@@ -6,8 +6,7 @@ Quacker <br><br>
 Username: <input type="text" name="username"><br> <br>
 Lösenord: <input type="password" name="password">
 <input type="submit">
-
-<br> <br>
+<br><br>
 
 <A HREF=Register.php>Registrera dig</A>
 
