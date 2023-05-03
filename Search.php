@@ -17,11 +17,11 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
         echo $row['USERNAME'];
         ?>
         <html>
-        <form action ="Profile.php" method=post> 
-        <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>">
-        <input type = "submit">
-        </form>
-
+        <!-- skickar username på profilen du klickar på till nästa sida (profile.php) -->
+            <form action ="Profile.php" method=post> 
+            <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>">
+            <input type = "submit">
+            </form>
         </html>
         <?php
     }

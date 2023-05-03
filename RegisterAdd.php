@@ -14,20 +14,19 @@ $db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincre
 $allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra? 
 $userList = $db->query($allInputQuery); #en ny array som innehåller all information
 
-#skapa en cookie som lagrar vilket ID som har loggat in
-#skicka till "message board"
-#skriv ut användarnamnet till den som har loggat in med hjälp av cookien 
-
+#använder boolen när jag kollar ifall username redan finns
 $sameUsername = false;
 
 while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
 { 
+	#om username redan finns så blir boolen true
 	if($username == $row['USERNAME'])
 	{
 		$sameUsername = true;
 	}
 }
 
+#om du inte skrev ett username kommer en knapp som skickar dig till register.php
 if(empty($username))
 {
 	echo "You didn't write a username";
@@ -37,6 +36,8 @@ if(empty($username))
 	</html>
 	<?php
 }
+
+#om du inte skrev ett password
 else if(empty($password))
 {
 	echo "You didn't write a password";
@@ -46,6 +47,8 @@ else if(empty($password))
 	</html>
 	<?php
 }
+
+#om username redan finns
 else if($sameUsername == true)
 {
 	echo "Username already exists";
@@ -55,6 +58,8 @@ else if($sameUsername == true)
 	</html>
 	<?php
 }
+
+#om password inte är samma som double check password
 else if($password != $password2)
 {
 	echo "Your password and double check password didn't match";
@@ -64,8 +69,10 @@ else if($password != $password2)
 	</html>
 	<?php
 }
+#om det inte är några problem med ditt inlogg
 else 
 {
+	#sparar username och password i table, skapar en cookie och skickar till feed.php
 	$db->exec("INSERT INTO USER(USERNAME, PASSWORD) VALUES('".$username."','".$password."')");
 	setcookie("user", $username, time()+(86400*30),'/');
 	header("Location: Feed.php");

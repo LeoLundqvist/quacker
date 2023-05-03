@@ -9,6 +9,13 @@ $db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincre
 $allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra? 
 $userList = $db->query($allInputQuery); #en ny array som innehåller all information
 
+#om någon loggar in på admin
+if($username == 'admin' && $password == 123)
+{
+    setcookie("admin", "inloggad", time()+(86400*30),'/');
+    header("Location: Admin.php");
+}
+
 while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
 { 
     #kollar ifall användarnamnet och lösenordet stämmer överens med user tabell rowen
@@ -19,6 +26,7 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
         header("Location: Feed.php");
     }
 }
+
 echo "Finns inte";
 ?>
 <html>

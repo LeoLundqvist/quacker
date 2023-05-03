@@ -1,4 +1,5 @@
 <?php
+#dubbelkollar att user fortfarande är inloggad
 if(!isset($_COOKIE['user']))
 {
 header("Location: LoggIn.php");
