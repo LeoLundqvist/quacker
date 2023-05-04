@@ -3,7 +3,7 @@
 <head><title>Logga in</title></head>
 Quacker <br><br>
 <form action="CheckLoggIn.php" method="POST">
-Username: <input type="text" name="username"><br> <br>
+Username or Gmail: <input type="text" name="username"><br> <br>
 Lösenord: <input type="password" name="password">
 <input type="submit">
 <br><br>

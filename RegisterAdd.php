@@ -1,5 +1,6 @@
 <?php
 $username = $_POST["username"];
+$gmail = $_POST['gmail'];
 $password = $_POST["password"];
 $password2 = $_POST["password2"];
 
@@ -7,7 +8,7 @@ $password2 = $_POST["password2"];
 $db = new SQLite3('USER.sq3'); 
 
 #Skapar tabellen direkt i PHP om den inte finns
-$db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, PASSWORD text)"); 
+$db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
 
 #$db->exec("INSERT INTO USER VALUES('".$username."','".$password."')"); #exec kör enskilda kommandon, just INSERT INTO är snällt och går bra. 
 
@@ -16,13 +17,19 @@ $userList = $db->query($allInputQuery); #en ny array som innehåller all informa
 
 #använder boolen när jag kollar ifall username redan finns
 $sameUsername = false;
+$sameGmail = false;
+$realGmail = strpos($gmail, '@gmail.com');
 
 while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
-{ 
+{
 	#om username redan finns så blir boolen true
 	if($username == $row['USERNAME'])
 	{
 		$sameUsername = true;
+	}
+	if($gmail == $row['GMAIL'])
+	{
+		$sameGmail = true;
 	}
 }
 
@@ -36,7 +43,6 @@ if(empty($username))
 	</html>
 	<?php
 }
-
 #om du inte skrev ett password
 else if(empty($password))
 {
@@ -47,7 +53,16 @@ else if(empty($password))
 	</html>
 	<?php
 }
-
+#om du inte skrev ett gmail
+else if(empty($gmail))
+{
+	echo "You didn't write a gmail";
+	?>
+	<html>
+	<A HREF=Register.php>Försök igen</A>
+	</html>
+	<?php
+}
 #om username redan finns
 else if($sameUsername == true)
 {
@@ -58,7 +73,16 @@ else if($sameUsername == true)
 	</html>
 	<?php
 }
-
+#om gmail redan finns
+else if($sameGmail == true)
+{
+	echo "Gmail already registered on different account";
+	?>
+	<html>
+	<A HREF=Register.php>Försök igen</A>
+	</html>
+	<?php
+}
 #om password inte är samma som double check password
 else if($password != $password2)
 {
@@ -69,11 +93,20 @@ else if($password != $password2)
 	</html>
 	<?php
 }
+else if($realGmail == false)
+{
+	echo "Your gmail isn't real";
+	?>
+	<html>
+	<A HREF=Register.php>Försök igen</A>
+	</html>
+	<?php
+}
 #om det inte är några problem med ditt inlogg
 else 
 {
 	#sparar username och password i table, skapar en cookie och skickar till feed.php
-	$db->exec("INSERT INTO USER(USERNAME, PASSWORD) VALUES('".$username."','".$password."')");
+	$db->exec("INSERT INTO USER(USERNAME, GMAIL, PASSWORD) VALUES('".$username."', '".$gmail."', '".$password."')");
 	setcookie("user", $username, time()+(86400*30),'/');
 	header("Location: Feed.php");
 }
