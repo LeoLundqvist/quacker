@@ -22,7 +22,7 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
         <html>
         <!-- skickar username på profilen du klickar på till nästa sida (profile.php) -->
             <form action ="Profile.php" method=post> 
-            <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>">
+            <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>" method="POST">
             <input type = "submit">
             </form>
         </html>

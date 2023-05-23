@@ -12,7 +12,7 @@ $userList = $db->query($allInputQuery); #en ny array som innehåller all informa
 #om någon loggar in på admin
 if($username == 'admin' && $password == 123)
 {
-    setcookie("admin", "inloggad", time()+(86400*30),'/');
+    setcookie("admin", true, time()+(86400*30),'/');
     header("Location: Admin.php");
 }
 

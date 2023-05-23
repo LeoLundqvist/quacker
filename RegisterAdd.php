@@ -4,34 +4,53 @@ $gmail = $_POST['gmail'];
 $password = $_POST["password"];
 $password2 = $_POST["password2"];
 
-#öppnar databasen USER.sq3
-$db = new SQLite3('USER.sq3'); 
-
-#Skapar tabellen direkt i PHP om den inte finns
-$db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
-
-#$db->exec("INSERT INTO USER VALUES('".$username."','".$password."')"); #exec kör enskilda kommandon, just INSERT INTO är snällt och går bra. 
-
-$allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra? 
-$userList = $db->query($allInputQuery); #en ny array som innehåller all information
-
-#använder boolen när jag kollar ifall username redan finns
-$sameUsername = false;
-$sameGmail = false;
+#bools för att kolla ifall inlogg är tillåtet
+$usernameAlreadyExists = false;
+$gmailAlreadyExists = false;
 $realGmail = strpos($gmail, '@gmail.com');
 
-while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+#öppnar databasen USER.sq3
+$user_db = new SQLite3('USER.sq3'); 
+#Skapar tabellen direkt i PHP om den inte finns
+$user_db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)");
+#Kommandot jag använder
+$user_AllInputQuery = "SELECT * FROM USER";
+$user_UserList = $user_db->query($user_AllInputQuery); #en ny array som innehåller all information
+
+#user_Waiting tabell 
+$user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
+$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
+$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING"; #vilket kommando vill vi köra? 
+$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); #en ny array som innehåller all information
+
+#user while loop
+while ($row = $user_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
 {
 	#om username redan finns så blir boolen true
 	if($username == $row['USERNAME'])
 	{
-		$sameUsername = true;
+		$usernameAlreadyExists = true;
 	}
 	if($gmail == $row['GMAIL'])
 	{
-		$sameGmail = true;
+		$gmailAlreadyExists = true;
 	}
 }
+
+#user waiting while loop
+while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+{
+	#om username redan finns så blir boolen true
+	if($username == $row['USERNAME'])
+	{
+		$usernameAlreadyExists = true;
+	}
+	if($gmail == $row['GMAIL'])
+	{
+		$gmailAlreadyExists = true;
+	}
+}
+
 
 #om du inte skrev ett username kommer en knapp som skickar dig till register.php
 if(empty($username))
@@ -64,7 +83,7 @@ else if(empty($gmail))
 	<?php
 }
 #om username redan finns
-else if($sameUsername == true)
+else if($usernameAlreadyExists == true)
 {
 	echo "Username already exists";
 	?>
@@ -74,7 +93,7 @@ else if($sameUsername == true)
 	<?php
 }
 #om gmail redan finns
-else if($sameGmail == true)
+else if($gmailAlreadyExists == true)
 {
 	echo "Gmail already registered on different account";
 	?>
@@ -102,13 +121,23 @@ else if($realGmail == false)
 	</html>
 	<?php
 }
+
 #om det inte är några problem med ditt inlogg
 else 
 {
 	#sparar username och password i table, skapar en cookie och skickar till feed.php
-	$db->exec("INSERT INTO USER(USERNAME, GMAIL, PASSWORD) VALUES('".$username."', '".$gmail."', '".$password."')");
+	$user_Waiting_db->exec("INSERT INTO USER_WAITING(USERNAME, GMAIL, PASSWORD, ACCEPTED) VALUES('".$username."', '".$gmail."', '".$password."', false)");
+
+	echo "Now you need to wait for the admin to accept you into the cult...";
+	?>
+	<html>
+	<A HREF=LoggIn.php>Logga in</A>
+	</html>
+	<?php
+	/*
 	setcookie("user", $username, time()+(86400*30),'/');
 	header("Location: Feed.php");
+	*/
 }
 
 ?>
