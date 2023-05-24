@@ -1,30 +1,31 @@
 <?php
 $username = $_POST["username"];
 $gmail = $_POST['gmail'];
-$password = $_POST["password"];
-$password2 = $_POST["password2"];
+#hashar lösenorden så att de är säkrare
+$password = hash('sha256', $_POST["password"]);
+$password2 = hash('sha256', $_POST["password2"]);
 
-#bools för att kolla ifall inlogg är tillåtet
+#bools och andra variabler för att kolla ifall inlogg är tillåtet
 $usernameAlreadyExists = false;
 $gmailAlreadyExists = false;
 $realGmail = strpos($gmail, '@gmail.com');
+$minPasswordLength = 3;
+$maxPasswordLength = 12;
 
-#öppnar databasen USER.sq3
+#öppnar/skapar USER tabellen
 $user_db = new SQLite3('USER.sq3'); 
-#Skapar tabellen direkt i PHP om den inte finns
 $user_db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)");
-#Kommandot jag använder
 $user_AllInputQuery = "SELECT * FROM USER";
-$user_UserList = $user_db->query($user_AllInputQuery); #en ny array som innehåller all information
+$user_UserList = $user_db->query($user_AllInputQuery);
 
-#user_Waiting tabell 
+#öppnar/skapar user_Waiting tabell 
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
 $user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
-$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING"; #vilket kommando vill vi köra? 
-$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); #en ny array som innehåller all information
+$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING";
+$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery);
 
-#user while loop
-while ($row = $user_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+#kollar så namn och gmail inte redan finns i USER tabellen
+while ($row = $user_UserList->fetchArray(SQLITE3_ASSOC))
 {
 	#om username redan finns så blir boolen true
 	if($username == $row['USERNAME'])
@@ -37,8 +38,8 @@ while ($row = $user_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en fu
 	}
 }
 
-#user waiting while loop
-while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+#kollar så namn och gmail inte redan finns i USER_WAITING tabellen
+while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))
 {
 	#om username redan finns så blir boolen true
 	if($username == $row['USERNAME'])
@@ -121,7 +122,26 @@ else if($realGmail == false)
 	</html>
 	<?php
 }
-
+#om lösenordet är för kort
+else if(strlen($_POST["password"]) < $minPasswordLength)
+{
+	echo "Your password needs to be at least 3 letters long";
+	?>
+	<html>
+	<A HREF=Register.php>Försök igen</A>
+	</html>
+	<?php
+}
+#kollar så att lösenordet inte är för långt
+else if(strlen($_POST["password"]) > $maxPasswordLength)
+{
+	echo "Your password needs to be shorter than 13 letters long";
+	?>
+	<html>
+	<A HREF=Register.php>Försök igen</A>
+	</html>
+	<?php
+}
 #om det inte är några problem med ditt inlogg
 else 
 {

@@ -2,55 +2,44 @@
 $USER_ID = $_POST["User_ID"];
 $Accepted = $_POST["Accepted"];
 
-
-#fixa hash lösenord genom 
-#lösen ord längd krav
-#bättre lösen ord utan tecken
-
-
-
 #öppnar databasen USER.sq3
 $user_db = new SQLite3('USER.sq3'); 
-#Skapar tabellen direkt i PHP om den inte finns
 $user_db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)");
-#Kommandot jag använder
 $user_AllInputQuery = "SELECT * FROM USER";
-$user_UserList = $user_db->query($user_AllInputQuery); #en ny array som innehåller all information
+$user_UserList = $user_db->query($user_AllInputQuery);
 
 #User Waiting tabellen
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
 $user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
-$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING"; #vilket kommando vill vi köra? 
-$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); #en ny array som innehåller all information
+$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING";
+$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); 
 
-$i = 0;
-echo "blbalalbla";
-while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))
 {
-    $i++;
-    echo "loop nr:".$i."<br>";
     if($USER_ID ==  $row["USER_ID"])
     {
-        echo $USER_ID." stämmer med user_ID".$row["USER_ID"]." i loop".$i."<br>";
-
+        #om man blir accepterad
         if($Accepted == "yes")
         {
+            $message = "Your account named ".$row["USERNAME"]." got accepted into quacker!";
+            #maila funkar inte i Apache så jag kommenterar bara ut mail koden
+            #mail($row["GMAIL"], "AdminGmailExample@gmail.com", $message);
+
+            #sätter in användar informationen i USER tabellen och sedan tas det bort från USER_WAITING tabellen
             $user_db->exec("INSERT INTO USER(USERNAME, GMAIL, PASSWORD) VALUES('".$row["USERNAME"]."', '".$row["GMAIL"]."', '".$row["PASSWORD"]."')");
             $user_Waiting_db->exec("DELETE FROM USER_WAITING WHERE USER_ID == $USER_ID");
-            #skicka mail
-
-            echo "accepterar user_ID ".$row["USER_ID"]."<br>";
-
-            break;
-            #header("Location: Admin.php");
         }
+        #om man inte är accepterad
         else if($Accepted == "no")
         {
+            $message = "Your account named ".$row["USERNAME"]." got accepted into quacker!";
+            #maila funkar inte i Apache så jag kommenterar bara ut mail koden
+            #$emailStatus = mail($row["GMAIL"], "AdminGmailExample@gmail.com", $message);
+            
+            #tar bort användarens information från USER_WAITING tabellen
             $user_Waiting_db->exec("DELETE FROM USER_WAITING WHERE USER_ID == $USER_ID");
-            echo "tar bort user_ID ".$row["USER_ID"]."<br>";
-
         }
+        header("Location: Admin.php");
     }
-    echo "<br>";
 }
 ?>
