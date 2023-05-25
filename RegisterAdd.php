@@ -137,7 +137,7 @@ else if(strlen($_POST["password"]) < $minPasswordLength || strlen($_POST["passwo
 else 
 {
 	#sparar username och password i table, skapar en cookie och skickar till feed.php
-	$user_Waiting_db->exec("INSERT INTO USER_WAITING(USERNAME, GMAIL, PASSWORD, ACCEPTED) VALUES('".$username."', '".$gmail."', '".$password."', false)");
+	$user_Waiting_db->exec("INSERT INTO USER_WAITING(USERNAME, GMAIL, PASSWORD) VALUES('".$username."', '".$gmail."', '".$password."')");
 
 	echo "Now you need to wait for the admin to accept you into the cult...";
 	?>

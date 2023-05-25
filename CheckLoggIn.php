@@ -24,7 +24,7 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
         if($password == $row['PASSWORD'])
         {
             #skapar user cookie som sparar användarnamnet
-            setcookie("user", $username, time()+(86400*30),'/');
+            setcookie("user", $row['USERNAME'], time()+(86400*30),'/');
             header("Location: Feed.php");
         }
         

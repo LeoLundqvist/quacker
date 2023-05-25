@@ -7,7 +7,6 @@ header("Location: LoggIn.php");
 $searchUsername = $_POST["searchUsername"];
 
 $db = new SQLite3('USER.sq3'); #vilken databas öppnar vi? 
-
 $allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra? 
 $userList = $db->query($allInputQuery); #en ny array som innehåller all information
 
@@ -28,12 +27,19 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
             <input type = "hidden" name = "profileUsername" value = "<?php echo $row['USERNAME'];?>" method="POST">
             <input type = "submit">
             </form>
+            <br>
         </html>
         <?php
+        break;
     }
 }
 if($found == false)
 {
-    echo "The user with the username ".$searchUsername." doesn't exist";
+    echo 'The user "'.$searchUsername.'" does not exist<br>';
 }
+
 ?>
+
+<html>
+<A HREF=Feed.php>Feed</A>
+</html>
