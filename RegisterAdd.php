@@ -20,7 +20,7 @@ $user_UserList = $user_db->query($user_AllInputQuery);
 
 #öppnar/skapar user_Waiting tabell 
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
-$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
+$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
 $user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING";
 $user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery);
 
@@ -122,26 +122,17 @@ else if($realGmail == false)
 	</html>
 	<?php
 }
-#om lösenordet är för kort
-else if(strlen($_POST["password"]) < $minPasswordLength)
+#om lösenordet är för kort eller för långt
+else if(strlen($_POST["password"]) < $minPasswordLength || strlen($_POST["password"]) > $maxPasswordLength)
 {
-	echo "Your password needs to be at least 3 letters long";
+	echo "Your password needs to be between ".$minPasswordLength." and ".$maxPasswordLength. " letters long";
 	?>
 	<html>
 	<A HREF=Register.php>Försök igen</A>
 	</html>
 	<?php
 }
-#kollar så att lösenordet inte är för långt
-else if(strlen($_POST["password"]) > $maxPasswordLength)
-{
-	echo "Your password needs to be shorter than 13 letters long";
-	?>
-	<html>
-	<A HREF=Register.php>Försök igen</A>
-	</html>
-	<?php
-}
+
 #om det inte är några problem med ditt inlogg
 else 
 {

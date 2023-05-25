@@ -1,6 +1,6 @@
 <?php
 $username = $_POST["username"];
-$password = $_POST["password"];
+$password = hash('sha256', $_POST["password"]);
 
 $db = new SQLite3('USER.sq3'); #vilken databas öppnar vi? 
 
@@ -10,7 +10,7 @@ $allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra?
 $userList = $db->query($allInputQuery); #en ny array som innehåller all information
 
 #om någon loggar in på admin
-if($username == 'admin' && $password == 123)
+if($username == 'admin' && $_POST["password"] == 123)
 {
     setcookie("admin", true, time()+(86400*30),'/');
     header("Location: Admin.php");

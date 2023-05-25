@@ -3,16 +3,16 @@ if(!isset($_COOKIE['admin']))
 {
 header("Location: LoggIn.php");
 }
-echo 'Admin inloggad <br>';
+echo 'Users waiting to be accepted: <br>';
 
 #user_Waiting tabell 
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
-$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
-$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING"; #vilket kommando vill vi köra? 
-$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); #en ny array som innehåller all information
+$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
+$user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING"
+$user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery);
 $i = 0;
 
-while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktion i SQLite3 som hämtar info från 
+while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))
 {
     $i++;
     echo "<br>User ".$i.": ".$row["USERNAME"].", Gmail: ".$row["GMAIL"];
@@ -34,9 +34,8 @@ while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC �
     <?php
     echo "<br>";
 }
-
 if($i == 0)
 {
-    echo "There is nothing for you to do";
+    echo "Noone is waiting to be accepted";
 }
 ?>

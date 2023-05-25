@@ -10,7 +10,7 @@ $user_UserList = $user_db->query($user_AllInputQuery);
 
 #User Waiting tabellen
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
-$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text, ACCEPTED bool)"); 
+$user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
 $user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING";
 $user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery); 
 
