@@ -145,10 +145,6 @@ else
 	<A HREF=LoggIn.php>Logga in</A>
 	</html>
 	<?php
-	/*
-	setcookie("user", $username, time()+(86400*30),'/');
-	header("Location: Feed.php");
-	*/
 }
 
 ?>

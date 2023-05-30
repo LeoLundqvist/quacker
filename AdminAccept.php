@@ -19,8 +19,8 @@ while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))
         #om man blir accepterad
         if($Accepted == "yes")
         {
-            $message = "Your account named ".$row["USERNAME"]." got accepted into quacker!";
             #maila funkar inte i Apache så jag kommenterar bara ut mail koden
+            #$message = "Your account named ".$row["USERNAME"]." got accepted into quacker!";
             #mail($row["GMAIL"], "AdminGmailExample@gmail.com", $message);
 
             #sätter in användar informationen i USER tabellen och sedan tas det bort från USER_WAITING tabellen
@@ -30,7 +30,7 @@ while ($row = $user_Waiting_UserList->fetchArray(SQLITE3_ASSOC))
         #om man inte är accepterad
         else if($Accepted == "no")
         {
-            $message = "Your account named ".$row["USERNAME"]." got accepted into quacker!";
+            #$message = "Your account named ".$row["USERNAME"]." didn't get accepted into quacker...";
             #$emailStatus = mail($row["GMAIL"], "AdminGmailExample@gmail.com", $message);
             
             #tar bort användarens information från USER_WAITING tabellen

@@ -1,7 +1,7 @@
 <?php
 if(!isset($_COOKIE['user']))
 {
-header("Location: LoggIn.php");
+    header("Location: LoggIn.php");
 }
 ?>
 
