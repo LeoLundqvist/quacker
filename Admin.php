@@ -4,12 +4,14 @@ if(!isset($_COOKIE['admin']))
 {
 header("Location: LoggIn.php");
 }
+
 echo 'Users waiting to be accepted: <br>';
 
-#user_Waiting tabell 
+#user_Waiting tabel
 $user_Waiting_db = new SQLite3('USER_WAITING.sq3'); 
 #skapar tabel ifall den inte redan finns
 $user_Waiting_db->exec("CREATE TABLE IF NOT EXISTS USER_WAITING(USER_ID integer primary key autoincrement, USERNAME text unique, GMAIL text unique, PASSWORD text)"); 
+#sql koden jag använder
 $user_Waiting_AllInputQuery = "SELECT * FROM USER_WAITING";
 $user_Waiting_UserList = $user_Waiting_db->query($user_Waiting_AllInputQuery);
 $i = 0;

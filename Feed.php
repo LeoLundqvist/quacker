@@ -8,8 +8,6 @@ if(!isset($_COOKIE['user']))
 echo $_COOKIE['user']."'s feed<br>";
 ?>
 
-
-
 <html>
 <!-- Sökruta -->
 <form action="Search.php" method="POST">
@@ -30,7 +28,7 @@ Sök på användare: <input type="text" name="searchUsername">
     $postList = $post_db->query($allInputQuery); #en ny array som innehåller all information
     $postCount = 0;
 
-    #får längden av tablen
+    #skriver ut alla posts
     while ($row = $postList->fetchArray(SQLITE3_ASSOC))
     {
         echo "POSTED BY".$row["USERNAME"].":<br>".$row["UPLOADTEXT"]."<br>POSTED AT ".$row["DATE"]."<br><br><br>";

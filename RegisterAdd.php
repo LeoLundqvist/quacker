@@ -59,7 +59,7 @@ if(empty($username))
 	echo "You didn't write a username";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -69,7 +69,7 @@ else if(empty($password))
 	echo "You didn't write a password";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -79,7 +79,7 @@ else if(empty($gmail))
 	echo "You didn't write a gmail";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -89,7 +89,7 @@ else if($usernameAlreadyExists == true)
 	echo "Username already exists";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -99,7 +99,7 @@ else if($gmailAlreadyExists == true)
 	echo "Gmail already registered on different account";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -109,7 +109,7 @@ else if($password != $password2)
 	echo "Your password and double check password didn't match";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -118,7 +118,7 @@ else if($realGmail == false)
 	echo "Your gmail isn't real";
 	?>
 	<html>
-	<A HREF=Register.php>Försök igen</A>
+	<A HREF=Register.php>Try again</A>
 	</html>
 	<?php
 }
@@ -142,7 +142,7 @@ else
 	echo "Now you need to wait for the admin to accept you into the cult...";
 	?>
 	<html>
-	<A HREF=LoggIn.php>Logga in</A>
+	<A HREF=LoggIn.php>Log in</A>
 	</html>
 	<?php
 }

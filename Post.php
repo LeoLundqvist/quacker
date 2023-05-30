@@ -1,4 +1,5 @@
 <?php
+#kollar ifall user är inloggad
 if(!isset($_COOKIE['user']))
 {
     header("Location: LoggIn.php");
@@ -7,8 +8,9 @@ if(!isset($_COOKIE['user']))
 
 <html>
 <body>
-<head><title>Posta</title></head>
+<head><title>Post</title></head>
 <form action="PostUpload.php" method="POST">
+<!-- Skriv ruta för ditt upplägg -->
 Upload text:<br><textarea rows = "5" cols = "80" name = "uploadText">
 </textarea><br>
 

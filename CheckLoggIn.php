@@ -9,7 +9,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS USER(USER_ID integer primary key autoincre
 $allInputQuery = "SELECT * FROM USER"; #vilket kommando vill vi köra? 
 $userList = $db->query($allInputQuery); #en ny array som innehåller all information
 
-#om någon loggar in på admin
+#om någon loggar in på admin skapas en cookie som sparar att admin är inloggad
 if($username == 'admin' && $_POST["password"] == 123)
 {
     setcookie("admin", true, time()+(86400*30),'/');
@@ -23,15 +23,14 @@ while ($row = $userList->fetchArray(SQLITE3_ASSOC))#SQLITE3_ASSOC är en funktio
     {
         if($password == $row['PASSWORD'])
         {
-            #skapar user cookie som sparar user_id
+            #skapar user cookie som sparar username
             setcookie("user", $row['USERNAME'], time()+(86400*30),'/');
             header("Location: Feed.php");
         }
-        
     }
 }
-echo "Finns inte";
+echo "This account doesn't exist";
 ?>
 <html>
-<A HREF=LoggIn.php>Försök igen</A>
+<A HREF=LoggIn.php>Try logging in again</A>
 </html>
