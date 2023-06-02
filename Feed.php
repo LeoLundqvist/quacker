@@ -31,7 +31,7 @@ Sök på användare: <input type="text" name="searchUsername">
     #skriver ut alla posts
     while ($row = $postList->fetchArray(SQLITE3_ASSOC))
     {
-        echo "POSTED BY".$row["USERNAME"].":<br>".$row["UPLOADTEXT"]."<br>POSTED AT ".$row["DATE"]."<br><br><br>";
+        echo "POSTED BY ".$row["USERNAME"].":<br>".$row["UPLOADTEXT"]."<br>POSTED AT ".$row["DATE"]."<br><br><br>";
     }
 
 ?>
